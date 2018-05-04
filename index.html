@@ -1,0 +1,61 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<link href="https://fonts.googleapis.com/css?family=Cabin+Sketch" rel="stylesheet">
+<style>
+    body {
+        font-family: 'Cabin Sketch', cursive;
+    }
+
+    textarea {
+        font-family: 'monospace';
+        width: 100%;
+        height: 200px;
+        display: none;
+    }
+
+    #graphviz_code, #svg_container {
+        display: none;
+    }
+
+    container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    div {
+        flex: 0 1;
+    }
+
+    a {
+        color: #999;
+    }
+</style>
+<script src="vendor/viz-lite.js"></script>
+<script src="vendor/rough.js"></script>
+<h2>Kafka Streams Topology Visualizer</h2>
+<container>
+    <div>
+        <h4>Input Kafka Topology</h4>
+        <input id="file" type="file" onchange="showFileContent(document.getElementById('input'))"/>
+        <div></div>
+        <input id="checkApplication" type="checkbox" onchange="hiddeApplication()" />Application
+        <select id="topologies" onChange="update()">
+            <option>global</option>
+        </select>
+        <div></div>
+        <textarea id="input"></textarea>
+    </div>
+    <div>
+        <h4>Output Diagram</h4>
+        <canvas id="canvas"></canvas>
+    </div>
+</container>
+<textarea id="graphviz_code"></textarea>
+<div id="svg_container"></div>
+<div id="results"></div>
+<script src="main.js"></script>
+</body>
+</html>
