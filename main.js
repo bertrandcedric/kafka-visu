@@ -80,7 +80,16 @@ function convertApplicationToDot(configJson, type, value) {
                     `);
                         if (inputs != null) {
                             inputs.forEach(
-                                (value) => results.push(`"${processName(value)}" -> "inside-${topology}";`)
+                                (value) => {
+                                    results.push(`"${processName(value)}" -> "inside-${topology}";`)
+                                    objToStrMap(config.topic).forEach(
+                                        (topic) => {
+                                            if (topic.name == value && topic.policy == "compact") {
+                                                results.push(`"${processName(value)}" [shape=cylinder];`);
+                                            }
+                                        }
+                                    )
+                                }
                             );
                         }
                         if (outputs != null) {
@@ -123,7 +132,7 @@ function convertTopoToDot(topo) {
 
     // dirty but quick parsing
     lines.forEach(line => {
-        var sub = /Sub-topology: (.)/;
+        var sub = /Sub-topology: (.*)/;
         var match = sub.exec(line);
 
         if (match) {
@@ -163,8 +172,8 @@ function convertTopoToDot(topo) {
                     topics.add(linkedName);
                 }
                 else if (type === 'stores') {
-                    outside.push(`"${entityName}" -> "${linkedName}";`);
-                    stores.add(linkedName);
+                    outside.push(`"${entityName}" -> "store-${linkedName}";`);
+                    stores.add("store-" + linkedName);
                 }
             });
 
